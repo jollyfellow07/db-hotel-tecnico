@@ -1,0 +1,55 @@
+CREATE TABLE [dbo].[ospite]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [nome] VARCHAR(50) NOT NULL, 
+    [cognome] VARCHAR(50) NOT NULL, 
+    [data_nascita] DATE NOT NULL, 
+    [numero_documento] VARCHAR(25) NOT NULL, 
+    [numero_cellulare] CHAR(14) NULL , 
+)
+CREATE TABLE [dbo].[prenotazione]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [configurazione_id] INT NOT NULL, 
+    [arrivo] DATE NOT NULL, 
+    [partenza] DATE NOT NULL, 
+    [prezzo_totale] DECIMAL(6, 2) NOT NULL, 
+    CONSTRAINT [FK_prenotazione_configurazioni] FOREIGN KEY ([configurazione_id]) REFERENCES [configurazioni]([id]), 
+)
+CREATE TABLE [dbo].[ospite_prenotazione]
+(
+	[ospite_id] INT NOT NULL, 
+    [prenotazione_id] INT NOT NULL, 
+    CONSTRAINT [FK_ospite_prenotazione_ospite] FOREIGN KEY ([ospite_id]) REFERENCES [ospite]([id]), 
+    CONSTRAINT [FK_ospite_prenotazione_prenotazione] FOREIGN KEY ([prenotazione_id]) REFERENCES [prenotazione]([id])  
+	
+)
+CREATE TABLE [dbo].[configurazione]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [titolo] VARCHAR(50) NOT NULL, 
+    [descrizione] TEXT NOT NULL DEFAULT 'Non è presente una descrizione'
+)
+CREATE TABLE [dbo].[pegamenti]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [prenotazione_id] INT NOT NULL, 
+    [importo_pagato] DECIMAL(6, 2) NOT NULL, 
+    [status] VARCHAR(20) NOT NULL, 
+    CONSTRAINT [FK_Table_prenotazione] FOREIGN KEY ([prenotazione_id]) REFERENCES [prenotazione]([id])
+)
+CREATE TABLE [dbo].[stanze]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [numero_letti] SMALLINT NOT NULL, 
+    [piano] VARCHAR(20) NOT NULL, 
+    [numero_stanza] SMALLINT NOT NULL, 
+)
+CREATE TABLE [dbo].[stanze_prenotazione]
+(
+	[stanze_id] INT NOT NULL,
+    [prenotazione_id] INT NOT NULL, 
+    CONSTRAINT [FK_stanze_prenotazione_Prenotazione] FOREIGN KEY ([prenotazione_id]) REFERENCES [prenotazione]([id]), 
+    CONSTRAINT [FK_stanze_prenotazione_stanze] FOREIGN KEY ([stanze_id]) REFERENCES [stanze]([id]), 
+)
+
