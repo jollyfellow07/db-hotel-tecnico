@@ -1,0 +1,53 @@
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++Select su unica tabella++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+1.
+SELECT * FROM ospiti WHERE document_type ='CI';
+****************************************************************************
+2.
+SELECT * FROM ospiti WHERE year(date_of_birth)>1988; 
+****************************************************************************
+3.
+SELECT * FROM ospiti WHERE name LIKE 'D%'; 
+****************************************************************************
+4.
+SELECT SUM(price) FROM pagamenti WHERE status='accepted' 
+****************************************************************************
+5.
+SELECT MAX(price) FROM pagamenti WHERE status='accepted' 
+****************************************************************************
+6.
+SELECT SUM(beds) FROM stanze 
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++GROUP BY++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+7.
+SELECT status,  SUM(price) AS somma_prezzi 
+FROM pagamenti 
+GROUP BY status;
+****************************************************************************
+8.
+SELECT stanza_id ,  count(stanza_id) AS numero_prenotazioni 
+FROM prenotazioni 
+GROUP BY stanza_id;
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++JOIN++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+9.
+SELECT * 
+FROM ospiti 
+INNER JOIN prenotazioni_has_ospiti ON ospiti.id = prenotazioni_has_ospiti.ospite_id
+INNER JOIN prenotazioni ON prenotazioni_has_ospiti.prenotazione_id = prenotazioni.id
+****************************************************************************
+10.
+SELECT SUM(price) AS SOMMA_PREZZI_STANZE_PIANO_1
+FROM stanze 
+INNER JOIN prenotazioni ON prenotazioni.stanza_id = stanze.id
+INNER JOIN pagamenti ON pagamenti.prenotazione_id = prenotazioni.id
+WHERE (stanze.floor=1) AND (pagamenti.status='accepted')
+******************************bonus****************************************
+11.
+
+
