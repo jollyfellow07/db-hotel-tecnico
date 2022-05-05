@@ -24,7 +24,7 @@ CREATE TABLE [dbo].[ospite_prenotazione]
     CONSTRAINT [FK_ospite_prenotazione_prenotazione] FOREIGN KEY ([prenotazione_id]) REFERENCES [prenotazione]([id])  
 	
 )
-CREATE TABLE [dbo].[configurazione]
+CREATE TABLE [dbo].[configurazioni]
 (
 	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
     [titolo] VARCHAR(50) NOT NULL, 
