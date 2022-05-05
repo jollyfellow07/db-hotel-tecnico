@@ -18,7 +18,7 @@ SELECT SUM(price) FROM pagamenti WHERE status='accepted'
 SELECT MAX(price) FROM pagamenti WHERE status='accepted' 
 ****************************************************************************
 6.
-SELECT SUM(beds) FROM stanze 
+SELECT SUM(beds) AS POSTI_LETTO_TOTALI FROM stanze 
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 +++++++++++++++++++++++++++++++++GROUP BY++++++++++++++++++++++++++++++++++
@@ -36,10 +36,11 @@ GROUP BY stanza_id;
 +++++++++++++++++++++++++++++++++++++JOIN++++++++++++++++++++++++++++++++++
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 9.
-SELECT * 
+SELECT ospiti.lastname, ospiti.name, prenotazioni.id AS prenotazione_numero
 FROM ospiti 
 INNER JOIN prenotazioni_has_ospiti ON ospiti.id = prenotazioni_has_ospiti.ospite_id
 INNER JOIN prenotazioni ON prenotazioni_has_ospiti.prenotazione_id = prenotazioni.id
+ORDER BY ospiti.lastname, ospiti.name
 ****************************************************************************
 10.
 SELECT SUM(price) AS SOMMA_PREZZI_STANZE_PIANO_1
@@ -49,5 +50,8 @@ INNER JOIN pagamenti ON pagamenti.prenotazione_id = prenotazioni.id
 WHERE (stanze.floor=1) AND (pagamenti.status='accepted')
 ******************************bonus****************************************
 11.
-
+SELECT stanze.id, stanze.room_number
+FROM stanze 
+LEFT OUTER JOIN prenotazioni ON prenotazioni.stanza_id = stanze.id
+WHERE stanze.id NOT IN (SELECT prenotazioni.stanza_id FROM prenotazioni)
 
